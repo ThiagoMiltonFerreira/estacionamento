@@ -15,6 +15,7 @@ class PatioController extends Controller
 
     public function __construct(patio $patio)  //(patio $patio) e o mesmo que $patio = new patio;
     {
+       
         $this->patio = $patio;
         $this->setData($patio->all());
     }

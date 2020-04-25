@@ -7,7 +7,8 @@ use Auth;
 use Illuminate\Http\Request;
 
 class exitPatio extends Controller
-{
+{  
+
     public function exit(patio $modelPatio)
     {
         

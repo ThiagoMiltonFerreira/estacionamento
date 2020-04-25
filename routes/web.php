@@ -28,17 +28,12 @@ Route::get('/', function () {
 	
 });
 
-Route::get('/exitPatio', 'exitPatio@exit')->name("exitPatio");
-
-Route::get('/principal', function () {
-    return view('home');
-	
-});
-
 
 Route::get('/home/{idVeiculo?}', 'HomeController@index')->name('home');
 
-Route::resource('/patio','PatioController');
+Route::resource('/patio','PatioController')->middleware('auth');
+Route::get('/exitPatio', 'exitPatio@exit')->name("exitPatio")->middleware('auth');
+
 Route::resource('/veiculo','VeiculoController')->middleware('auth');
-Route::post('/veiculo/relatorio', 'VeiculoController@relVeiculos')->name('relPatio');
+Route::post('/veiculo/relatorio', 'VeiculoController@relVeiculos')->middleware('auth')->name('relPatio');
 
