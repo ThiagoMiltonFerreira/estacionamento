@@ -1,0 +1,36 @@
+1 - Clonar repositorio para a pasta htdocs do xampp 
+2 - executar a instalaçao de dependencias do projeto atravez do composer (   composer update      )
+2 - Executar Query de banco de dados (estacionamentoSql.sql)
+3 - Colar arquivo https-vhots.conf na pasta xampp>apache>conf>extras
+4 - Iniciar servidor artisan php: php artisan serve 
+ ultiliza a porta 8000 ( link http://estacionamento.local:8000/ )
+5 - Executar a seed (UserTableSeeder) que insere os primeiros dados de acesso ao sistema
+ php artisan db:seed
+
+
+6 - Apos a instalacao ate a atual versao 0.1, deve criar o primeiro patio e tipos manualmente:
+        Patios
+         Inserindo a data na tabela patios data no formato 2020-04-24 (Y-m-d)
+        tipos
+          Inserindo os tipos de veiculos (Pequeno, Medio, Grande, Moto )
+
+
+ Observaçoes
+                **** Possiveis erros****
+                
+                1 -"SQLSTATE [HY000] [1049] Banco de dados desconhecido 'laravel'".
+
+                Se você estiver executando o Laravel php artisan serve, ele não captará as .envalterações até que você pare e reinicie o servidor.
+                É possível que você tenha definido "laravel" como o nome do seu banco de dados quando o servidor foi iniciado. Mate-o e execute o comando novamente.
+                https://stackoverflow.com/questions/56776273/laravel-1049-unknown-database
+                
+                2 - 500 Erro no servidor - Laravel
+
+                Umas das soluções foi acessar a pasta do projeto, via cmd, e rodar o seguinte comando:
+                copy .env.example .env
+                Isso, quando não se há o arquivo '.env' criado automáticamente na pasta, e, em seguida:
+
+                php artisan key:generate
+                Depois, foi só rodar o php artisan serve normalmente    
+
+                
