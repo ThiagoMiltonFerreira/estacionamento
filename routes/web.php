@@ -37,3 +37,4 @@ Route::get('/exitPatio', 'exitPatio@exit')->name("exitPatio")->middleware('auth'
 Route::resource('/veiculo','VeiculoController')->middleware('auth');
 Route::post('/veiculo/relatorio', 'VeiculoController@relVeiculos')->middleware('auth')->name('relPatio');
 
+Route::resource('/admin/user','AdminUserController')->middleware('auth');

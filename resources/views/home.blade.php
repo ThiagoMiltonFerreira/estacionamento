@@ -5,8 +5,25 @@
 @section('title', 'Inicio')
 
 @section('css')
+  <style>
+    .input{
+      padding-right:10px;
+    }
+    .border{
+      
+    width:90%;
+    height:90%;
+    margin-left:40px;
+    border-width:10px;
+    padding-left:50px;
+    padding-top:15px;
+    border-image:url(border.png) 30 30 repeat;
+    -moz-border-image:url(border.png) 30 30 repeat; /* Firefox */
+    -webkit-border-image:url(border.png) 30 30 repeat; /* Safari e Chrome */
+    -o-border-image:url(border.png) 30 30 repeat; /* Opera */
+    }
 
-
+   </style> 
 
 @stop
 
@@ -75,7 +92,40 @@
 
 @endif
 
+<div class="border">  
+  <form method="post" action="{{ route('veiculo.store')}}">
+    @csrf     
+    <input type="hidden" class="form-control" name="patioId" value="{{$patioId}}">
+    <div class="row">
+      <div class="input">
+        <label for="lblPlaca">Placa:</label>
+        <input type="text" class="form-control" name="placa" aria-describedby="placa" placeholder="Exemplo: NHS7900" data-mask='aaa0000' required>
+      </div>
+      <div class="input">
+        <label for="lblPlaca">Tipo:</label>
+        <div class="input-group mb-3">
+          <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
+              <option selected valule="">  </option>
+              <option value="1">Pequeno</option>
+              <option value="2">Medio</option>
+              <option value="3">Grande</option>
+              <option value="4">Moto</option>
+          </select> 
+          &nbsp;
+          &nbsp;   
+          &nbsp;                 
+          <button class="btn btn-primary">Adicionar ao Patio</button>
+        </div> 
+      </div>
+    </div>    
+  </form>
+</div>
+  
 
+
+<!--
+
+************ Form versao anterior ******************
 
 <form method="post" action="{{ route('veiculo.store')}}">
     @csrf   
@@ -102,6 +152,9 @@
     <button class="btn btn-primary">Adicionar ao Patio</button>
 
 </form>
+
+
+-->
 
 <hr>
 
