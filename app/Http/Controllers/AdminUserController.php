@@ -15,19 +15,27 @@ class AdminUserController extends Controller
      */
     private $adminUser;
     private $user;
+    private $data;
+
     public function __construct(AdminUser $adminUser, User $user)
     {
         $this->adminUser = $adminUser;
         $this->user = $user;
+        $this->setData($user->select('users.name')->orderBy('users.name', 'asc')->get());
+    }
+    public function getData()
+    {
+        return $this->data;
+    }
+    public function setData($data)
+    {
+        $this->data = $data;
     }
     public function index()
     {
-        
-        //$users = $this->user->all()->sortBy("name");
-
-        $users = $this->user->select('users.name')->orderBy('users.name', 'asc')->get();
-        //dd($users);
-        return view('user', compact('users'));
+        $usersName = $this->getData();
+        $usersTipo =  $this->adminUser->all(); 
+        return view('user', compact('usersName','usersTipo'));
     }
 
     /**
@@ -35,9 +43,22 @@ class AdminUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $users = $this->user->select('users.idTipoAdminUser','users.id','users.name','users.email','admin_users.name as tipo','admin_users.tela_entrada_saida_veiculo','admin_users.tela_usuario',
+        'admin_users.tela_veiculo_caixa','admin_users.tela_tabela_preco','admin_users.tela_cadastrar_tipo_veiculo')
+                                ->join('admin_users','users.idTipoAdminUser','=','admin_users.id')
+                                ->where('users.name','=',$request->users)
+                                ->orderBy('users.name', 'asc')
+                                ->get();
+
+
+        $usersTipo =  $this->adminUser->all();                           
+        //dd($users);
+        $usersName = $this->getData();
+    
+        return view('user',compact('usersName','users','usersTipo'));
+
     }
 
     /**
@@ -48,18 +69,9 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
+        
+        return 'salvar novo usuario';
 
-        //var_dump($request->all());
-        //exit;
-        $users = $this->user->select('users.id','users.name','users.email','admin_users.name as tipo','admin_users.tela_entrada_saida_veiculo','admin_users.tela_usuario',
-        'admin_users.tela_veiculo_caixa','admin_users.tela_tabela_preco','admin_users.tela_cadastrar_tipo_veiculo')
-                                ->join('admin_users','users.idTipoAdminUser','=','admin_users.id')
-                                ->where('users.name','=',$request->users)
-                                ->orderBy('users.name', 'asc')
-                                ->get();
-
-        //dd($users);
-        return view('user',compact('users'));
     }
 
     /**
@@ -93,7 +105,8 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd($request->all());
+        return 'update';
     }
 
     /**
@@ -106,4 +119,11 @@ class AdminUserController extends Controller
     {
         //
     }
+
+
+
+
+
+
+    
 }

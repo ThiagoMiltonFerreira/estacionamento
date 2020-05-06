@@ -22,6 +22,33 @@
     -webkit-border-image:url(border.png) 30 30 repeat; /* Safari e Chrome */
     -o-border-image:url(border.png) 30 30 repeat; /* Opera */
     }
+  
+  .align-div{
+
+    text-align: center;
+
+  }
+  #btn-novo-usuario{
+
+      margin-top:-66px;
+      margin-left:90px;
+
+  }
+  #margin-border{
+
+      display:block;
+      padding:50px;
+  }
+  #align-text-center{
+
+      text-align:center;
+      
+  }
+
+
+
+
+
 
    </style> 
 
@@ -45,7 +72,7 @@
 @stop
 
 @section('content_header')
-    <h1 align="center">Entrada de Veiculos</h1>
+    <h1 id="align-text-center">Entrada de Veiculos</h1>
 @stop
 
 @section('content')
@@ -176,7 +203,7 @@
       <td>{{$value->placa}}</td>
       <td>{{$value->tamanho}}</td>
       <td>{{$value->horaEntrada}}</td>
-      <td align="center">
+      <td>
             <form action="{{ route('veiculo.update',$value->id) }}" method="POST"> <!-- usar form como method field para DELETE PUTH OU PATH, pos nao exite action delete tem que forçar um iput com {!! method_field('delete') !!}  -->
                 {!! method_field('put') !!}
                 @csrf

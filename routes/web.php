@@ -38,3 +38,4 @@ Route::resource('/veiculo','VeiculoController')->middleware('auth');
 Route::post('/veiculo/relatorio', 'VeiculoController@relVeiculos')->middleware('auth')->name('relPatio');
 
 Route::resource('/admin/user','AdminUserController')->middleware('auth');
+Route::resource('/admin/create/acess','ControlAcessController')->middleware('auth');
