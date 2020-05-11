@@ -16,6 +16,7 @@ class AdminUserController extends Controller
     private $adminUser;
     private $user;
     private $data;
+    private $errorOrSucess;
 
     public function __construct(AdminUser $adminUser, User $user)
     {
@@ -35,7 +36,8 @@ class AdminUserController extends Controller
     {
         $usersName = $this->getData();
         $usersTipo =  $this->adminUser->all(); 
-        return view('user', compact('usersName','usersTipo'));
+        $errorOrSucess = $this->errorOrSucess;
+        return view('user', compact('usersName','usersTipo','errorOrSucess'));
     }
 
     /**
@@ -69,8 +71,30 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->all();
+        $sucess;
+        $error;
+        $data["idTipoAdminUser"] = (int)$data["idTipoAdminUser"];
+        $userFind = $this->user->where("name",$data["name"])->get();
+        if(isset($userFind[0]))
+        {
+            $error = "Usuario nao Cadastrado, usuario ".$data['name']. " ja exite !"; 
+        }
+        else
+        {
+            $user = $this->user->create($data);
+            if($user)
+            {
+                $sucess = "Usuario $user->name Cadastrado";   
+            }
+            else
+            {
+                $error = "Usuario nao cadastrado! Erro ao Criar usuario line 89 ";
+            }
+        }
         
-        return 'salvar novo usuario';
+        return  redirect()->route('user.index',compact('sucess','error'));
+      
 
     }
 

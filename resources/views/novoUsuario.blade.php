@@ -1,7 +1,16 @@
 <div class="border" id="margin-border">
     
     <h4 id="align-text-center">Cadastrar Novo Usuario </h4>
- 
+    @if(isset($_GET['sucess']))
+        <div class="alert alert-info" role="alert">
+                {{$_GET['sucess']}}
+        </div>
+    @elseif(isset($_GET['error']))
+        <div class="alert alert-danger" role="alert">
+                {{$_GET['error']}}
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('user.store') }}">
      
         @csrf  

@@ -11,7 +11,7 @@
         </div>
 
         <div class="align-div">
-                    <h4 id="align-text-center">Paginas com autorizadas.</h4></br>
+                    <h4 id="align-text-center">Paginas autorizadas.</h4></br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="tela_entrada_saida_veiculo" value="1">
                         <label class="form-check-label" for="inlineCheckbox1" >Entrada e saida de veiculos</label>
