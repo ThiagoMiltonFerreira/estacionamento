@@ -82,15 +82,17 @@ class AdminUserController extends Controller
         }
         else
         {
-            $user = $this->user->create($data);
-            if($user)
-            {
-                $sucess = "Usuario $user->name Cadastrado";   
+            $data['password'] = bcrypt($data['password']);
+            try {
+                $user = $this->user->create($data);
+                if($user)
+                {
+                    $sucess = "Usuario $user->name Cadastrado";   
+                }
+            } catch (\Throwable $th) {
+                $error = "Usuario nao cadastrado! ";
             }
-            else
-            {
-                $error = "Usuario nao cadastrado! Erro ao Criar usuario line 89 ";
-            }
+
         }
         
         return  redirect()->route('user.index',compact('sucess','error'));
@@ -130,7 +132,31 @@ class AdminUserController extends Controller
     public function update(Request $request, $id)
     {
         //dd($request->all());
-        return 'update';
+        $data = $request->all();
+        $sucess;
+        $error;
+        $updateUser;
+        if($data['password']==null)
+        {
+            unset($data['password']);
+        }
+        else
+        {
+            $data['password'] = bcrypt($data['password']);
+        }
+       
+        try {
+            $updateUser = $this->user->find($id)->update($data);
+
+            if($updateUser)
+            {               
+                $sucess = "Usuario $id Atualizado";
+            }
+        } catch (\Throwable $th) {
+            $error = "Erro ao atualizar! O e-mail informado ja esta sendo ultilizado.";
+        }      
+        
+        return  redirect()->route('user.index',compact('sucess','error'));
     }
 
     /**
