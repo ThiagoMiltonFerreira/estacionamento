@@ -39,6 +39,10 @@ create table patios(
 	primary key(id)
 
 );
+
+-- Cria o primeiro patio do sistema
+INSERT INTO `forge`.`patios` (`data`) VALUES ('2020-05-23');  
+
  create table tipos(
 	
     id int not null auto_increment,
@@ -48,6 +52,12 @@ create table patios(
     
  
  );
+
+-- Cria os primeiros tipos de veiculos para a inicializaçao do sistema 
+INSERT INTO `forge`.`tipos` (`tamanho`) VALUES ('Pequeno'); 
+INSERT INTO `forge`.`tipos` (`tamanho`) VALUES ('Medio'); 
+INSERT INTO `forge`.`tipos` (`tamanho`) VALUES ('Grande');
+INSERT INTO `forge`.`tipos` (`tamanho`) VALUES ('Moto');  
  
 
 create table veiculos(

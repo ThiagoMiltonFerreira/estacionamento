@@ -17,7 +17,7 @@ class PatioController extends Controller
     {
        
         $this->patio = $patio;
-        $this->setData($patio->all());
+        //$this->setData($patio->all());
     }
 
     public function setData($data)

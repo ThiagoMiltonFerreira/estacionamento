@@ -19,7 +19,7 @@ class VeiculoController extends Controller
     public function __construct(veiculos $veiculo)  //(patio $patio) e o mesmo que $patio = new patio;
     {
         $this->veiculo = $veiculo;
-        $this->setData($veiculo->all());
+       // $this->setData($veiculo->all());
     }
 
     public function setData($data)
@@ -42,11 +42,11 @@ class VeiculoController extends Controller
     public function index()
     {
         // carregar veiculo mostrando o tipo com join  
-        $data = $this->getData();
-        $data = json_encode($data);
-        $data = (array)$data;
+        //$data = $this->getData();
+        //$data = json_encode($data);
+        //$data = (array)$data;
 
-        return view('relatorioPatio',compact('data'));
+        return view('relatorioPatio');
     }
 
     /**
@@ -73,7 +73,12 @@ class VeiculoController extends Controller
         $validated = $request->validated(); // valida campos com base na classe tipo request de validaçao do laravel  php artisan make:request StoreBlogPost
         $data = $request->all();
         $data['horaEntrada'] = $timestamp;
-        $this->veiculo->create($data);
+        try {
+            $this->veiculo->create($data);
+        } catch (\Throwable $th) {
+            die("codigo 900 | Erro ao adicionar veiculo ao patio </h1> - ".$th->getMessage());
+        }
+        
 
         return redirect()->route('home');
     }
@@ -92,12 +97,17 @@ class VeiculoController extends Controller
         $request['dtInicial'] = str_replace('T', ' ', $request['dtInicial'] );
         $request['dtFinal'] = str_replace('T', ' ', $request['dtFinal'] );
         
-        $data = $this->veiculo->whereRaw('horaEntrada >= ? and horaSaida <= ? ',[$request['dtInicial'],$request['dtFinal']])
+        try {
+            $data = $this->veiculo->whereRaw('horaEntrada >= ? and horaSaida <= ? ',[$request['dtInicial'],$request['dtFinal']])
                                                    
-                                                            ->join('tipos', 'tipos.id', '=', 'veiculos.tipoId')
-                                                            ->get();                           
-                                                            
-                                                            
+                                                                            ->join('tipos', 'tipos.id', '=', 'veiculos.tipoId')
+                                                                            ->get();
+
+        } catch (\Throwable $th) {
+            die("codigo 901 | Erro ao Carregar relatorio de  veiculos </h1> - ".$th->getMessage());
+        }
+                      
+                                                                                                          
         $data['valorSoma'] = $data->sum('valorTotal');
 
         return view('relatorioPatio',compact('data'));
@@ -131,8 +141,14 @@ class VeiculoController extends Controller
     {
         date_default_timezone_set('America/Sao_Paulo');
         $dateAtual = date("Y-m-d H:i:s");
+        
+        try {
+            $dataVeiculo = $this->veiculo->find($id);
 
-        $dataVeiculo = $this->veiculo->find($id);
+        } catch (\Throwable $th) {
+            die("codigo 902 | Erro ao Pesquisar Veiculo </h1> - ".$th->getMessage());
+        }
+       
     
         $d1     =   new DateTime( $dataVeiculo['horaEntrada'] );
 
@@ -192,15 +208,21 @@ class VeiculoController extends Controller
 
         //echo "Valor Total $valorTotal <br> $qtdHoras Horas de permanencia  e $qtdMinutos minutos . ";
         //exit;
-        
-        $veiuloFind = $this->veiculo->find($id);
+        try {
 
-        $update = $veiuloFind->update(
-                                [
-                                    'horaSaida'=>$dateAtual,
-                                    'valorTotal'=>$valorTotal
+            $veiuloFind = $dataVeiculo->update(
+                [
+                    'horaSaida'=>$dateAtual,
+                    'valorTotal'=>$valorTotal
 
-                                ]);
+                ]);
+            
+        } catch (\Throwable $th) {
+            die("codigo 9023 | Erro ao registar saida do veiculo </h1> - ".$th->getMessage());
+        }
+
+
+                         
         return redirect()->route('home',$id);
     
     }

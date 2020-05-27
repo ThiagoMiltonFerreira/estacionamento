@@ -22,7 +22,21 @@ class AdminUserController extends Controller
     {
         $this->adminUser = $adminUser;
         $this->user = $user;
-        $this->setData($user->select('users.name')->orderBy('users.name', 'asc')->get());
+        $dataUser;
+        try {
+
+            $dataUser = $user->select('users.name')->orderBy('users.name', 'asc')->get();
+
+        } catch (\Throwable $th) {
+            // die() para a execução apos exibir o erro
+            die("codigo 1000 | Erro ao Carregar nomes de Usuarios - ".$th->getMessage());
+
+        }
+
+        $this->setData($dataUser);
+
+
+        //$this->setData($user->select('users.name')->orderBy('users.name', 'asc')->get());
     }
     public function getData()
     {
@@ -35,7 +49,15 @@ class AdminUserController extends Controller
     public function index()
     {
         $usersName = $this->getData();
-        $usersTipo =  $this->adminUser->all(); 
+        $usersTipo;
+        try {
+            $usersTipo = $this->adminUser->all();
+            
+        } catch (\Throwable $th) {
+             // die() para a execução apos exibir o erro
+             die("codigo 1001 | Erro ao Carregar Tipos de usuarios - ".$th->getMessage());
+        }
+        
         $errorOrSucess = $this->errorOrSucess;
         return view('user', compact('usersName','usersTipo','errorOrSucess'));
     }
@@ -47,16 +69,29 @@ class AdminUserController extends Controller
      */
     public function create(Request $request)
     {
-        $users = $this->user->select('users.idTipoAdminUser','users.id','users.name','users.email','admin_users.name as tipo','admin_users.tela_entrada_saida_veiculo','admin_users.tela_usuario',
-        'admin_users.tela_veiculo_caixa','admin_users.tela_tabela_preco','admin_users.tela_cadastrar_tipo_veiculo')
-                                ->join('admin_users','users.idTipoAdminUser','=','admin_users.id')
-                                ->where('users.name','=',$request->users)
-                                ->orderBy('users.name', 'asc')
-                                ->get();
+        $users;
 
+        try {
+           
+            $users = $this->user->select('users.idTipoAdminUser','users.id','users.name','users.email','admin_users.name as tipo','admin_users.tela_entrada_saida_veiculo','admin_users.tela_usuario',
+            'admin_users.tela_veiculo_caixa','admin_users.tela_tabela_preco','admin_users.tela_cadastrar_tipo_veiculo')
+                                    ->join('admin_users','users.idTipoAdminUser','=','admin_users.id')
+                                    ->where('users.name','=',$request->users)
+                                    ->orderBy('users.name', 'asc')
+                                    ->get();
+        } catch (\Throwable $th) {
+            // die() para a execução apos exibir o erro
+            die("<h1>codigo 1002 | Erro ao Carregar dados completos do usuario </h1> - ".$th->getMessage());
+        }
+       
+        try {
+            $usersTipo = $this->adminUser->all();
+            
+        } catch (\Throwable $th) {
+             // die() para a execução apos exibir o erro
+             die("codigo 1006 | Erro ao Carregar Tipos de usuarios - ".$th->getMessage());
+        }
 
-        $usersTipo =  $this->adminUser->all();                           
-        //dd($users);
         $usersName = $this->getData();
     
         return view('user',compact('usersName','users','usersTipo'));
@@ -75,23 +110,30 @@ class AdminUserController extends Controller
         $sucess;
         $error;
         $data["idTipoAdminUser"] = (int)$data["idTipoAdminUser"];
-        $userFind = $this->user->where("name",$data["name"])->get();
-        if(isset($userFind[0]))
-        {
-            $error = "Usuario nao Cadastrado, usuario ".$data['name']. " ja exite !"; 
-        }
-        else
-        {
-            $data['password'] = bcrypt($data['password']);
-            try {
-                $user = $this->user->create($data);
-                if($user)
-                {
-                    $sucess = "Usuario $user->name Cadastrado";   
-                }
-            } catch (\Throwable $th) {
-                $error = "Usuario nao cadastrado! ";
+        $userFind;
+        try {
+            $userFind = $this->user->where("name",$data["name"])->get();
+        } catch (\Throwable $th) {
+            die('<h1>codigo 1003 | Erro ao pesquisar Usuario </h1> - '. $th->getMessage());
+        }    
+            if(isset($userFind[0]))
+            {
+                $error = "Usuario nao Cadastrado, usuario ".$data['name']. " ja exite !"; 
             }
+            else
+            {
+                $data['password'] = bcrypt($data['password']);
+                try {
+                    $user = $this->user->create($data);
+                    if($user)
+                    {
+                        $sucess = "Usuario $user->name Cadastrado";   
+                    }
+                } catch (\Throwable $th) {
+                    $error = "codigo 1004 | Usuario nao cadastrado, Falha ao cadastrar usuario</h1> - ".$th->getMessage();
+                }
+       
+       
 
         }
         
@@ -150,10 +192,10 @@ class AdminUserController extends Controller
 
             if($updateUser)
             {               
-                $sucess = "Usuario $id Atualizado";
+                $sucess = "Usuario ".$data['name']." Atualizado";
             }
         } catch (\Throwable $th) {
-            $error = "Erro ao atualizar! O e-mail informado ja esta sendo ultilizado.";
+            $error = "Codigo 1005 | Erro ao atualizar o usuario ".$data['name']."! O e-mail informado ja esta sendo ultilizado - ".$th->getMessage();
         }      
         
         return  redirect()->route('user.index',compact('sucess','error'));

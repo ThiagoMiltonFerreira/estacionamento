@@ -15,9 +15,15 @@ class exitPatio extends Controller
         date_default_timezone_set('America/Sao_Paulo');
         $dateAtual = date("Y-m-d");
 
-        $lastIdPatio = $modelPatio->max('id');
-        $patio = $modelPatio->find($lastIdPatio);
-        $update = $patio->where('data','=',$dateAtual)->whereNull('dataFinal')->update(['dataFinal'=>$dateAtual]);
+        try {
+            $lastIdPatio = $modelPatio->max('id');
+            $patio = $modelPatio->find($lastIdPatio);
+            $update = $patio->where('data','=',$dateAtual)->whereNull('dataFinal')->update(['dataFinal'=>$dateAtual]);
+            
+        } catch (\Throwable $th) {
+            die("codigo 2000 | Erro ao finalizar patio </h1> - ".$th->getMessage());
+        }
+        
         Auth::logout();
         return redirect()->route('login');
     }

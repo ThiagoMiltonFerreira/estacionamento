@@ -34,9 +34,17 @@ class HomeController extends Controller
         $dateAtual = date("Y-m-d");
         //var_dump($dateAtual);
         //exit;
-
-        $lastIdPatio = $modelPatio->max('id');
-        $patio = $modelPatio->find($lastIdPatio);
+        try {
+            $lastIdPatio = $modelPatio->max('id');
+        } catch (\Throwable $th) {
+            die("codigo 3000 | Erro ao carregar maior id </h1> - ".$th->getMessage());
+        }
+        try {
+            $patio = $modelPatio->find($lastIdPatio);
+        } catch (\Throwable $th) {
+            die("codigo 3001 | Erro ao pesquisar patio por id </h1> - ".$th->getMessage());
+        }
+        
         $patioId;
 
         $dateAtual = new DateTime( $dateAtual );
@@ -78,14 +86,25 @@ class HomeController extends Controller
         }
         else if ($dateAtual>$dateInicioPatio && $patio->dataFinal != null)
         {
-            $createPatio = $modelPatio->create(['data'=>substr($dtString['date'],0,10 )]);    
-            $patioId = $createPatio->id;
+            try {
+                $createPatio = $modelPatio->create(['data'=>substr($dtString['date'],0,10 )]);    
+                $patioId = $createPatio->id;
+                
+            } catch (\Throwable $th) {
+                die("codigo 3002 | Erro ao Criar Patio </h1> - ".$th->getMessage());
+            }
+            
 
         }
         else if($patio->data===substr($dtString['date'],0,10 ) && $patio->dataFinal === substr($dateAtual->date,0,10 ))
         {
-            $createPatio = $modelPatio->create(['data'=>substr($dtString['date'],0,10 )]);    
-            $patioId = $createPatio->id;
+            try {
+                $createPatio = $modelPatio->create(['data'=>substr($dtString['date'],0,10 )]);    
+                $patioId = $createPatio->id;
+            } catch (\Throwable $th) {
+                die("codigo 3003 | Erro ao Criar Patio </h1> - ".$th->getMessage());
+            }
+
         }
         else
         {
@@ -102,11 +121,16 @@ class HomeController extends Controller
     
         }
    
-        $patio = $veiculos->select('veiculos.id','veiculos.placa','tipos.tamanho','veiculos.patioId','veiculos.horaEntrada','veiculos.horaSaida')
+        try {
+            $patio = $veiculos->select('veiculos.id','veiculos.placa','tipos.tamanho','veiculos.patioId','veiculos.horaEntrada','veiculos.horaSaida')
                                                                                                     
-                                                                                ->whereNull('horaSaida')
-                                                                                ->join('tipos', 'tipos.id', '=', 'veiculos.tipoId')
-                                                                                ->get(); // Pagar os campos especificados  os veiculos onde horaSaida e nulo e unir com a tabela tipos onde 'tipos.id', '=', 'veiculos.tipoId'
+            ->whereNull('horaSaida')
+            ->join('tipos', 'tipos.id', '=', 'veiculos.tipoId')
+            ->get(); // Pagar os campos especificados  os veiculos onde horaSaida e nulo e unir com a tabela tipos onde 'tipos.id', '=', 'veiculos.tipoId'
+        } catch (\Throwable $th) {
+            die("codigo 3004 | Erro ao Carregar veiculos no Patio </h1> - ".$th->getMessage());
+        }
+       
         //var_dump($patio);
         //exit;
         return view('home',compact('patio','patioId',isset($veiculo)?'veiculo':''));

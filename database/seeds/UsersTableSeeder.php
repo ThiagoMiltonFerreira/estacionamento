@@ -16,7 +16,8 @@ class UsersTableSeeder extends Seeder
 
             'name'      => 'Thiago Ferreira',
             'email'     => 'thiagomilton.f@gmail.com',
-            'password'  => bcrypt('123456')
+            'password'  => bcrypt('123456'),
+            'idTipoAdminUser' => 1
 
         ]);
     }
