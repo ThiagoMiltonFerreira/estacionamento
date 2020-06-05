@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers;
 use App\patio;
 use App\veiculos;
+use App\User;
 use App\Http\Controllers\VeiculoController;
 use DateTime;
+use Auth;
 
 
 class HomeController extends Controller
@@ -27,8 +29,30 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(PatioController $patios,patio $modelPatio,veiculos $veiculos,VeiculoController $veiculoController,$idVeiculo = null)
-    {
+    public function index(PatioController $patios,patio $modelPatio,veiculos $veiculos,VeiculoController $veiculoController,User $user,$idVeiculo = null)
+    {    
+        //dd(Auth::user()->idTipoAdminUser);
+        session_start();
+
+        $dataUser = $user->select('users.idTipoAdminUser','users.id','users.name','users.email','admin_users.name as tipo','admin_users.tela_entrada_saida_veiculo','admin_users.tela_usuario',
+        'admin_users.tela_veiculo_caixa','admin_users.tela_tabela_preco','admin_users.tela_cadastrar_tipo_veiculo')
+                                ->join('admin_users','users.idTipoAdminUser','=','admin_users.id')
+                                ->where('users.idTipoAdminUser','=',Auth::user()->idTipoAdminUser)
+                                ->orderBy('users.name', 'asc')
+                                ->get();
+
+        $_SESSION['dataUser'] = json_decode($dataUser[0]);
+        $dataSession = (array)$_SESSION["dataUser"];
+        //var_dump($dataSession);
+        //exit;
+        if($dataSession['tela_entrada_saida_veiculo'] === 0 )
+        {
+            $acess = false;
+            return view('home',compact('acess'));
+            //echo"nao tem permissao.";
+            //var_dump($dataSession);
+            //exit;
+        }
 
         date_default_timezone_set('America/Sao_Paulo');
         $dateAtual = date("Y-m-d");

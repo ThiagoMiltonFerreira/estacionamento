@@ -48,6 +48,21 @@ class AdminUserController extends Controller
     }
     public function index()
     {
+        
+        session_start();
+        $dataSession = (array)$_SESSION["dataUser"];
+
+        //var_dump($dataSession["tela_usuario"]);
+        //exit;
+
+        if($dataSession["tela_usuario"]===0)
+        {
+            //echo"Ops, voce nao pode acessar. Entre em contato com seu usuário administrador ! ";
+            $acess = false;
+            return view('user',compact('acess'));
+            exit;
+        }
+    
         $usersName = $this->getData();
         $usersTipo;
         try {

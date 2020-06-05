@@ -70,153 +70,158 @@
 
     </script>
 @stop
-
 @section('content_header')
-    <h1 id="align-text-center">Entrada de Veiculos</h1>
+      <h1 id="align-text-center">Entrada de Veiculos</h1>
+
 @stop
+@if(!isset($acess))
 
-@section('content')
+  @section('content')
+    @if(isset($veiculo))
 
-
-@if(isset($veiculo))
-
-<div class="container mt-3">
-      <!-- The Modal -->
-      <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-          
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <h4 class="modal-title">Saída de Veiculos - Sistema Estapark</h4>
-             
-            </div>
-            
-            <!-- Modal body -->
-           
-                <div class="modal-body">
-      
-                  <p>Identificador: {{$veiculo->id}}</p>
-                  <p>Patio: {{$veiculo->patioId}}</p>
-                  <p>Placa: {{$veiculo->placa}}</p>
-                  <p>Hora entrada: {{$veiculo->horaEntrada}}</p>
-                  <p>Hora Saida: {{$veiculo->horaSaida}}</p>
-                  <p>Valor a pagar: {{'R$ '.number_format($veiculo->valorTotal, 2, ',', '.')}} </p>
+    <div class="container mt-3">
+          <!-- The Modal -->
+          <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+              
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Saída de Veiculos - Sistema Estapark</h4>
                 
                 </div>
-            
-            
-            <!-- Modal footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-              <button type="button" class="btn btn-info" onclick="window.print()">Imprimir</button>
+                
+                <!-- Modal body -->
+              
+                    <div class="modal-body">
+          
+                      <p>Identificador: {{$veiculo->id}}</p>
+                      <p>Patio: {{$veiculo->patioId}}</p>
+                      <p>Placa: {{$veiculo->placa}}</p>
+                      <p>Hora entrada: {{$veiculo->horaEntrada}}</p>
+                      <p>Hora Saida: {{$veiculo->horaSaida}}</p>
+                      <p>Valor a pagar: {{'R$ '.number_format($veiculo->valorTotal, 2, ',', '.')}} </p>
+                    
+                    </div>
+                
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-info" onclick="window.print()">Imprimir</button>
+                </div>
+                
+              </div>
             </div>
-            
           </div>
+        </div>    
+
+    @endif
+
+    <div class="border">  
+      <form method="post" action="{{ route('veiculo.store')}}">
+        @csrf     
+        <input type="hidden" class="form-control" name="patioId" value="{{$patioId}}">
+        <div class="row">
+          <div class="input">
+            <label for="lblPlaca">Placa:</label>
+            <input type="text" class="form-control" name="placa" aria-describedby="placa" placeholder="Exemplo: NHS7900" data-mask='aaa0000' required>
+          </div>
+          <div class="input">
+            <label for="lblPlaca">Tipo:</label>
+            <div class="input-group mb-3">
+              <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
+                  <option selected valule="">  </option>
+                  <option value="1">Pequeno</option>
+                  <option value="2">Medio</option>
+                  <option value="3">Grande</option>
+                  <option value="4">Moto</option>
+              </select> 
+              &nbsp;
+              &nbsp;   
+              &nbsp;                 
+              <button class="btn btn-primary">Adicionar ao Patio</button>
+            </div> 
+          </div>
+        </div>    
+      </form>
+    </div>
+      
+
+
+    <!--
+
+    ************ Form versao anterior ******************
+
+    <form method="post" action="{{ route('veiculo.store')}}">
+        @csrf   
+
+        <input type="hidden" class="form-control" name="patioId" value="{{$patioId}}">
+        <div class="form-group">
+            <label for="lblPlaca">Placa:</label>
+            <input type="text" class="form-control" name="placa" aria-describedby="placa" placeholder="Exemplo: NHS7900" data-mask='aaa0000' required>
+            <small id="emailHelp" class="form-text text-muted">Digite a placa do veiculo.</small>
         </div>
-      </div>
-    </div>    
 
-@endif
-
-<div class="border">  
-  <form method="post" action="{{ route('veiculo.store')}}">
-    @csrf     
-    <input type="hidden" class="form-control" name="patioId" value="{{$patioId}}">
-    <div class="row">
-      <div class="input">
-        <label for="lblPlaca">Placa:</label>
-        <input type="text" class="form-control" name="placa" aria-describedby="placa" placeholder="Exemplo: NHS7900" data-mask='aaa0000' required>
-      </div>
-      <div class="input">
-        <label for="lblPlaca">Tipo:</label>
         <div class="input-group mb-3">
-          <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
-              <option selected valule="">  </option>
-              <option value="1">Pequeno</option>
-              <option value="2">Medio</option>
-              <option value="3">Grande</option>
-              <option value="4">Moto</option>
-          </select> 
-          &nbsp;
-          &nbsp;   
-          &nbsp;                 
-          <button class="btn btn-primary">Adicionar ao Patio</button>
-        </div> 
-      </div>
-    </div>    
-  </form>
-</div>
-  
-
-
-<!--
-
-************ Form versao anterior ******************
-
-<form method="post" action="{{ route('veiculo.store')}}">
-    @csrf   
-
-    <input type="hidden" class="form-control" name="patioId" value="{{$patioId}}">
-    <div class="form-group">
-        <label for="lblPlaca">Placa:</label>
-        <input type="text" class="form-control" name="placa" aria-describedby="placa" placeholder="Exemplo: NHS7900" data-mask='aaa0000' required>
-        <small id="emailHelp" class="form-text text-muted">Digite a placa do veiculo.</small>
-    </div>
-
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Tipo de veiculo</label>
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Tipo de veiculo</label>
+            </div>
+                <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
+                    <option selected valule="">  </option>
+                    <option value="1">Pequeno</option>
+                    <option value="2">Medio</option>
+                    <option value="3">Grande</option>
+                    <option value="4">Moto</option>
+                </select>
         </div>
-            <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
-                <option selected valule="">  </option>
-                <option value="1">Pequeno</option>
-                <option value="2">Medio</option>
-                <option value="3">Grande</option>
-                <option value="4">Moto</option>
-            </select>
-    </div>
-    <button class="btn btn-primary">Adicionar ao Patio</button>
+        <button class="btn btn-primary">Adicionar ao Patio</button>
 
-</form>
+    </form>
 
 
--->
+    -->
 
-<hr>
+    <hr>
 
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Veiculo</th>
-      <th scope="col">Placa</th>
-      <th scope="col">Tipo</th>
-      <th scope="col">Hora Entrada</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Veiculo</th>
+          <th scope="col">Placa</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Hora Entrada</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
 
-  <tbody>
-    @foreach($patio as $value)
-    <tr>
-      <th scope="row">{{$value->id}}</th>
-      <td>{{$value->placa}}</td>
-      <td>{{$value->tamanho}}</td>
-      <td>{{$value->horaEntrada}}</td>
-      <td>
-            <form action="{{ route('veiculo.update',$value->id) }}" method="POST"> <!-- usar form como method field para DELETE PUTH OU PATH, pos nao exite action delete tem que forçar um iput com {!! method_field('delete') !!}  -->
-                {!! method_field('put') !!}
-                @csrf
-                <button class="btn btn-danger" type="submit" onclick="return confirm('Confirma a saida deste veiculo?')">Registrar saida</button>
-            </form>
-      </td>
-    </tr>    
-    @endforeach
-  </tbody>
-</table>
+      <tbody>
+        @foreach($patio as $value)
+        <tr>
+          <th scope="row">{{$value->id}}</th>
+          <td>{{$value->placa}}</td>
+          <td>{{$value->tamanho}}</td>
+          <td>{{$value->horaEntrada}}</td>
+          <td>
+                <form action="{{ route('veiculo.update',$value->id) }}" method="POST"> <!-- usar form como method field para DELETE PUTH OU PATH, pos nao exite action delete tem que forçar um iput com {!! method_field('delete') !!}  -->
+                    {!! method_field('put') !!}
+                    @csrf
+                    <button class="btn btn-danger" type="submit" onclick="return confirm('Confirma a saida deste veiculo?')">Registrar saida</button>
+                </form>
+          </td>
+        </tr>    
+        @endforeach
+      </tbody>
+    </table>
+  @stop
 
-@stop
+@else
+  @section('content')
+  
+    @include('acessoNegado')
 
+  @stop
+@endif
 
 
 

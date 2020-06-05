@@ -42,7 +42,7 @@
 @section('content')
 
 
-
+@if(!isset($acess))
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Novo Usuario</a>
@@ -61,7 +61,11 @@
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">@include('alterarUsuario')</div>
   
 </div>
+@else
 
+@include('acessoNegado')
+
+@endif
 
 @stop
 
