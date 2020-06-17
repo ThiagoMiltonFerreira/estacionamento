@@ -52,7 +52,7 @@ class VeiculoController extends Controller
         //var_dump($dataSession);
         //exit;
 
-        if($dataSession["tela_veiculo_caixa"]===0)
+        if($dataSession["tela_veiculo_caixa"]===null)
         {
             //echo"Ops, voce nao pode acessar. Entre em contato com seu usuário administrador ! ";
             $acess = false;

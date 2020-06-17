@@ -54,8 +54,8 @@ class AdminUserController extends Controller
 
         //var_dump($dataSession["tela_usuario"]);
         //exit;
-
-        if($dataSession["tela_usuario"]===0)
+   
+        if($dataSession["tela_usuario"]===null)
         {
             //echo"Ops, voce nao pode acessar. Entre em contato com seu usuário administrador ! ";
             $acess = false;
@@ -203,6 +203,7 @@ class AdminUserController extends Controller
         }
        
         try {
+
             $updateUser = $this->user->find($id)->update($data);
 
             if($updateUser)

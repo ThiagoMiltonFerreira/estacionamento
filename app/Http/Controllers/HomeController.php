@@ -45,7 +45,7 @@ class HomeController extends Controller
         $dataSession = (array)$_SESSION["dataUser"];
         //var_dump($dataSession);
         //exit;
-        if($dataSession['tela_entrada_saida_veiculo'] === 0 )
+        if($dataSession['tela_entrada_saida_veiculo'] === null )
         {
             $acess = false;
             return view('home',compact('acess'));

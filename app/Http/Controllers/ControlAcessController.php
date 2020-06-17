@@ -1,11 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\AdminUser;
+use App\Http\Controllers\ControllerValidatesRequests; // classe validadora de request do form
 use Illuminate\Http\Request;
+
 
 class ControlAcessController extends Controller
 {
+
+    private $tipoAdminUser;
+    private $data;
+    public function __construct(AdminUser $modelTipoAdminUser)  
+    {
+        $this->tipoAdminUser = $modelTipoAdminUser;
+       // $this->setData($veiculo->all());
+    }
     /**
      * Display a listing of the resource.
      *
@@ -34,8 +44,22 @@ class ControlAcessController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|max:30'
+        ]);
+
         //dd($request->all());
-        return 'Cadastrar novo controle de acesso.';
+        $data = $request->all();
+        //dd($data);
+        try {
+            $this->tipoAdminUser->create($data);
+            $sucess = "Permissao de acesso Cadastrada.";
+            
+        } catch (\Throwable $th) {
+            $error = "Codigo 2000 |Erro ao cadastrar nova permissao de acesso, ".$th->getMessage(); 
+        }
+
+        return  redirect()->route('user.index',compact('sucess','error'));
     }
 
     /**
