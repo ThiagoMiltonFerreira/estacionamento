@@ -260,7 +260,7 @@ return [
         ],
         [
             'text' => 'Cadastrar tipo de veiculo',
-            'url'  => '#',
+            'url'  => 'admin/veiculoType',
             'icon' => 'fas fa-fw fa-car-side',
         ],
         [

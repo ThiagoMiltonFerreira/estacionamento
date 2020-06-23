@@ -76,7 +76,22 @@ create table veiculos(
 		references patios(id)
 );
 
+create table preco(
 
+	id int not null auto_increment,
+    tipoId int not null unique,
+    vlUmaHora double not null,
+    vlDuasHoras double not null,
+    vlTresHoras double not null,
+    vlQuatroHoras double not null,
+    vlDiaria double not null,
+    vlQuinzeMin double not null,
+    vlTrintaMin double not null,
+    vlSessentaMin double not null,
+    primary key(id),
+    foreign key fk_tipoVeiculoPreco(tipoId)
+		references tipos(id)
+);
 
 
 

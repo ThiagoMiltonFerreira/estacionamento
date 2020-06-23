@@ -39,3 +39,4 @@ Route::post('/veiculo/relatorio', 'VeiculoController@relVeiculos')->middleware('
 
 Route::resource('/admin/user','AdminUserController')->middleware('auth');
 Route::resource('/admin/create/acess','ControlAcessController')->middleware('auth');
+Route::resource('/admin/veiculoType','AdminTypeVehicleController')->middleware('auth');

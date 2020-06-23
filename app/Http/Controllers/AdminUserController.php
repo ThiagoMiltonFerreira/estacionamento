@@ -55,7 +55,7 @@ class AdminUserController extends Controller
         //var_dump($dataSession["tela_usuario"]);
         //exit;
    
-        if($dataSession["tela_usuario"]===null)
+        if($dataSession["tela_usuario"]===0)
         {
             //echo"Ops, voce nao pode acessar. Entre em contato com seu usuário administrador ! ";
             $acess = false;
