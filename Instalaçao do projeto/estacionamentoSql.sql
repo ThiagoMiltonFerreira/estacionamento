@@ -46,7 +46,8 @@ INSERT INTO `forge`.`patios` (`data`) VALUES ('2020-05-23');
  create table tipos(
 	
     id int not null auto_increment,
-    tamanho varchar(10),
+    tamanho varchar(10) not null unique,
+    ativo int not null,
     primary key(id)
     
     

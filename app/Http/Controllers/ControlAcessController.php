@@ -23,7 +23,7 @@ class ControlAcessController extends Controller
      */
     public function index()
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -33,7 +33,7 @@ class ControlAcessController extends Controller
      */
     public function create()
     {
-        
+        return redirect()->route('home');
     }
 
     /**
@@ -70,7 +70,7 @@ class ControlAcessController extends Controller
      */
     public function show($id)
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -81,7 +81,7 @@ class ControlAcessController extends Controller
      */
     public function edit($id)
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -93,7 +93,7 @@ class ControlAcessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -104,6 +104,6 @@ class ControlAcessController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return redirect()->route('home');
     }
 }

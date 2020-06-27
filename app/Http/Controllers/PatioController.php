@@ -52,9 +52,7 @@ class PatioController extends Controller
      */
     public function index(VeiculoController $veiculos)
     {
-
-
-        return "relatorio de patioController";
+        return redirect()->route('home');
     }
 
     /**
@@ -64,7 +62,7 @@ class PatioController extends Controller
      */
     public function create()
     {
-        return "cadastrar veiculo CREATE";
+        return redirect()->route('home');
     }
 
     /**
@@ -75,7 +73,7 @@ class PatioController extends Controller
      */
     public function store(Request $request)
     {
-        return 'cadastrar patio';
+        return redirect()->route('home');
         /*
         $veiculos = new veiculos();
         $data = $request->all();
@@ -92,7 +90,7 @@ class PatioController extends Controller
      */
     public function show($id)
     {
-        return "mostrar veiculo SHOW"; 
+        return redirect()->route('home'); 
 
     }
 
@@ -104,7 +102,7 @@ class PatioController extends Controller
      */
     public function edit($id)
     {
-        return "Editar veiculo EDIT"; 
+        return redirect()->route('home'); 
     }
 
     /**
@@ -116,7 +114,7 @@ class PatioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -127,6 +125,6 @@ class PatioController extends Controller
      */
     public function destroy($id)
     {
-        return "saida do veiculo  DESTROY $id"; 
+        return redirect()->route('home');
     }
 }

@@ -165,7 +165,7 @@ class AdminUserController extends Controller
      */
     public function show($id = null)
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -176,7 +176,7 @@ class AdminUserController extends Controller
      */
     public function edit($id)
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -225,7 +225,7 @@ class AdminUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return redirect()->route('home');
     }
 
 

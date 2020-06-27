@@ -70,7 +70,7 @@ class VeiculoController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->route('home');
     }
 
     /**
@@ -141,6 +141,7 @@ class VeiculoController extends Controller
      */
     public function edit($id)
     {
+        return redirect()->route('home');
        // retornar formulario preffechido com os dados do banco de dados
     }
 
@@ -249,6 +250,6 @@ class VeiculoController extends Controller
      */
     public function destroy($id)
     {
-        
+        return redirect()->route('home');
     }
 }
