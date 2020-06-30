@@ -7,6 +7,7 @@ use App\Http\Controllers;
 use App\patio;
 use App\veiculos;
 use App\User;
+use App\tipo;
 use App\Http\Controllers\VeiculoController;
 use DateTime;
 use Auth;
@@ -29,7 +30,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(PatioController $patios,patio $modelPatio,veiculos $veiculos,VeiculoController $veiculoController,User $user,$idVeiculo = null)
+    public function index(PatioController $patios,patio $modelPatio,veiculos $veiculos,VeiculoController $veiculoController,User $user,tipo $tipos,$idVeiculo = null)
     {    
         //dd(Auth::user()->idTipoAdminUser);
         session_start();
@@ -79,7 +80,6 @@ class HomeController extends Controller
        //var_dump(substr($dtString['date'],0,10 ));
         //var_dump($patio->data===substr($dtString['date'],0,10 ) && $patio->dataFinal === substr($dateAtual->date,0,10 ));
         //var_dump($dtString['date']);
-        
         //exit;
 
 
@@ -155,12 +155,14 @@ class HomeController extends Controller
             die("codigo 3004 | Erro ao Carregar veiculos no Patio </h1> - ".$th->getMessage());
         }
        
-        //var_dump($patio);
+        try {
+            $tiposVeiculo = $tipos->select('tipos.tamanho','tipos.ativo')->where('tipos.ativo','=',1)->orderBy('tamanho', 'ASC')->get();
+        } catch (\Throwable $th) {
+            die("codigo 3005 | Erro ao Carregar Tipos de veiculos </h1> - ".$th->getMessage());
+        }
+
+        //var_dump($tipos);
         //exit;
-        return view('home',compact('patio','patioId',isset($veiculo)?'veiculo':''));
-
-
-        // Criar encerramneto do patio insert no patio dataFInal
-  
+        return view('home',compact('patio','patioId',isset($veiculo)?'veiculo':'','tiposVeiculo'));  
     }
 }

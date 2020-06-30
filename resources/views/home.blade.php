@@ -131,11 +131,10 @@
             <label for="lblPlaca">Tipo:</label>
             <div class="input-group mb-3">
               <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
-                  <option selected valule="">  </option>
-                  <option value="1">Pequeno</option>
-                  <option value="2">Medio</option>
-                  <option value="3">Grande</option>
-                  <option value="4">Moto</option>
+              <option></option>
+                @foreach($tiposVeiculo as $tipo)
+                  <option value="1">{{$tipo->tamanho}}</option>
+                @endforeach
               </select> 
               &nbsp;
               &nbsp;   

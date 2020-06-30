@@ -15,13 +15,17 @@
 
     }  
 
-
     .align-btn-visualizar{
         display:block;
         text-align: center;
         margin-left:300px;
         margin-top:-54px;
     }
+
+    .alignTitle{
+        text-align: center;
+    }
+
     #margin-border{
 
         display:block;
@@ -90,20 +94,20 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Identificador</th>
-                        <th scope="col">Tipo de veiculo</th>
-                        <th scope="col">Ativado</th>
-                        <th scope="col">Desativado</th>
+                        <th scope="col" class="alignTitle">Tipo de veiculo</th>
+                        <th scope="col" class="alignTitle">Ativado</th>
+                        <th scope="col" class="alignTitle">Desativado</th>
                     </tr>
                 </thead>
                     <tbody>
                         @foreach($data as $value)
                         <tr>
                         <th scope="row">{{$value->id}}</th>
-                        <td>{{$value->tamanho}}</td>  
-                        <td>
+                        <td class="alignTitle">{{$value->tamanho}}</td>  
+                        <td class="alignTitle">
                             <input class="form-check-input" type="radio" id="inlineCheckbox1" name="{{$value->id}}" value="1"  {{$value->ativo==1?'checked':''}}>
                         </td> 
-                        <td>
+                        <td class="alignTitle">
                             <input class="form-check-input" type="radio" id="inlineCheckbox1" name="{{$value->id}}" value="0"  {{$value->ativo==0?'checked':''}}>
                         </td> 
                         </tr>    
