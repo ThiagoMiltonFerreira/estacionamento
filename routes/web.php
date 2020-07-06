@@ -38,6 +38,11 @@ Route::resource('/veiculo','VeiculoController')->middleware('auth');
 Route::post('/veiculo/relatorio', 'VeiculoController@relVeiculos')->middleware('auth')->name('relPatio');
 
 Route::resource('/admin/user','AdminUserController')->middleware('auth');
+
 Route::resource('/admin/create/acess','ControlAcessController')->middleware('auth');
+
 Route::resource('/admin/veiculoType','AdminTypeVehicleController')->middleware('auth');
 Route::post('/admin/veiculoTypeAll','AdminTypeVehicleController@showAll')->middleware('auth')->name('typeVeihicleAll');
+
+Route::resource('/admin/tbPreco','AdminTbPrecoController')->middleware('auth');
+Route::post('/admin/tbPrecoAll','AdminTbPrecoController@showAll')->middleware('auth')->name('tbPrecoAll');

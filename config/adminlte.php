@@ -255,7 +255,7 @@ return [
         ],
         [
             'text' => 'Tabela de Preços',
-            'url'  => '#',
+            'url'  => '/admin/tbPreco',
             'icon' => 'fas fa-fw fa-money-bill-alt',
         ],
         [

@@ -68,9 +68,14 @@
     tela_impressao.window.print();
     tela_impressao.window.close();
   }
+  function goBack() {
+  window.history.back();
+  }
+
   </script>
 @stop
 @section('content_header')
+        <meta http-equiv="refresh" content="5">
         <h1 id="align-text-center">Entrada de Veiculos</h1>
 
 @stop
@@ -106,7 +111,7 @@
                 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-danger" onclick="goBack();" data-dismiss="modal">Fechar</button>
                   <!--<button type="button" class="btn btn-info" onclick="window.print()">Imprimir</button>-->
                   <input type="button" class="btn btn-info" onclick="cont();" value="Imprimir">
                 </div>
