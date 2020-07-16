@@ -55,6 +55,15 @@
 
 @section('content')
     @if(!isset($acess)) 
+    @if(isset($_GET['sucess']))
+        <div class="alert alert-info" role="alert">
+                {{$_GET['sucess']}}
+        </div>
+    @elseif(isset($_GET['error']))
+        <div class="alert alert-danger" role="alert">
+                {{$_GET['error']}}
+        </div>
+    @endif
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Cadastrar nova tabela de preços</a>

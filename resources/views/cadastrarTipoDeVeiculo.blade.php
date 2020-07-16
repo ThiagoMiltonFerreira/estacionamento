@@ -49,18 +49,8 @@
 @section('content')
     @if(!isset($acess))
         <div class="alert alert-warning" role="alert">
-            Ao cadastrar o novo tipo de veiculo, será nescessario vincular o mesmo a uma <a href="#">tabela de preço.</a>
+            Ao cadastrar o novo tipo de veiculo, será nescessario vincular o mesmo a uma <a href="/admin/tbPreco">tabela de preço.</a>
         </div>
-        @if(isset($error))
-            <div class="alert alert-danger" role="alert">
-                    {{$error}}
-            </div>
-        @endif
-        @if(isset($sucess))
-            <div class="alert alert-info" role="alert">
-                    {{$sucess}}
-            </div>
-        @endif
         <div class="border" id="margin-border">
         <form method="POST" action="{{ route('veiculoType.store') }}">
             

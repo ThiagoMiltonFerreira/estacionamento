@@ -2,21 +2,20 @@
 
     <h4 id="align-text-center">Visualizar/Editar  Tabelas de preços. </h4>
     <br>
-    <form method="get" action="{{ route('tbPreco.create') }}">
-                
+    <form method="get" action="{{ route('tbPreco.create') }}">                
         @csrf  
         <div class="form-group row">
             <label for="nome" class="col-sm-2 col-form-label">Tipo de veiculo:</label>
             <select class="custom-select" name="tipoId" required>
                 <option value="" selected> </option>
-                @if(!isset($tipoVeiculo))
+                @if(!isset($tipoVeiculoVisualizar))
 
                     <option value="1">P</option>
                     <option value="1">M</option>
 
                 @else
 
-                    @foreach($tipoVeiculo as $tipo)
+                    @foreach($tipoVeiculoVisualizar as $tipo)
                     <option value="{{$tipo->id}}">{{$tipo->tamanho}}</option>
                     @endforeach
                     
@@ -66,7 +65,7 @@
     <tbody>
         @if(isset($data))
             @foreach($data as $value)
-            <form method="POST" action="route('tbPreco.update',{{$value->id}})">   
+            <form action="{{route('tbPreco.update',$value->id)}}" method="POST">   
             @method('PUT')          
             @csrf
                 <tr>
@@ -75,31 +74,31 @@
                         {{$value->id}}
                     </td>
                     <td>                      
-                        <input type="text" class="form-control" value="{{$veiculo->tamanho}}" disabled="disabled" required>                       
+                        <input type="text" class="form-control" value="{{$value->tamanho}}" disabled="disabled" required>                       
                     </td>
                     <td>                      
-                        <input type="mumber" class="form-control" name="vlUmaHora" value="{{$veiculo->vlUmaHora}}" step="0.01" min="0" max="100" required>                       
+                        <input type="number" class="form-control" name="vlUmaHora" value="{{$value->vlUmaHora}}" step="0.01" min="0" max="100" required>                       
                     </td>
                     <td>
-                        <input type="mumber" class="form-control" name="vlDuasHoras" value="{{$value->vlDuasHoras}}" step="0.01" min="0" max="100" required>                    
+                        <input type="number" class="form-control" name="vlDuasHoras" value="{{$value->vlDuasHoras}}" step="0.01" min="0" max="100" required>                    
                     </td>
                     <td>
-                        <input type="mumber" class="form-control" name="vlTresHoras" value="{{$value->vlTresHoras}}" step="0.01" min="0" max="100" required>
+                        <input type="number" class="form-control" name="vlTresHoras" value="{{$value->vlTresHoras}}" step="0.01" min="0" max="100" required>
                     </td>
                     <td>
-                        <input type="mumber" class="form-control" name="vlQuatroHoras" value="{{$value->vlQuatroHoras}}" step="0.01" min="0" max="100" required>    
+                        <input type="number" class="form-control" name="vlQuatroHoras" value="{{$value->vlQuatroHoras}}" step="0.01" min="0" max="100" required>    
                     </td>            
                     <td>
-                        <input type="mumber" class="form-control" name="vlDiaria" value="{{$value->vlDiaria}}" step="0.01" min="0" max="100" required>
+                        <input type="number" class="form-control" name="vlDiaria" value="{{$value->vlDiaria}}" step="0.01" min="0" max="100" required>
                     </td>
                     <td>
-                        <input type="mumber" class="form-control" name="vlQuinzeMin" value="{{$value->vlQuinzeMin}}" step="0.01" min="0" max="100" required>
+                        <input type="number" class="form-control" name="vlQuinzeMin" value="{{$value->vlQuinzeMin}}" step="0.01" min="0" max="100" required>
                     </td>
                     <td>
-                        <input type="mumber" class="form-control" name="vlTrintaMin" value="{{$value->vlTrintaMin}}" step="0.01" min="0" max="100" required>
+                        <input type="number" class="form-control" name="vlTrintaMin" value="{{$value->vlTrintaMin}}" step="0.01" min="0" max="100" required>
                     </td>
                     <td>
-                        <input type="mumber" class="form-control" name="vlTrintaMin" value="{{$value->vlSessentaMin}}" step="0.01" min="0" max="100" required>
+                        <input type="number" class="form-control" name="vlSessentaMin" value="{{$value->vlSessentaMin}}" step="0.01" min="0" max="100" required>
                     </td>
                     <td>
                         <button class="btn btn-danger" type="submit" onclick="return confirm('Deseja realmente alterar estes dados?')">Alterar</button>

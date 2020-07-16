@@ -2,17 +2,18 @@
     
     <h4 id="align-text-center">Cadastrar Nova Tabela de preços. </h4>
     <br>
-    @if(isset($_GET['sucess']))
-        <div class="alert alert-info" role="alert">
-                {{$_GET['sucess']}}
-        </div>
-    @elseif(isset($_GET['error']))
-        <div class="alert alert-danger" role="alert">
-                {{$_GET['error']}}
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
     <div class="alert alert-warning" role="alert">
-        Toda tabela de Preço deve ser obrigatoriamente vinculada a um tipo de veiculo, para que seja efetuada a cobrança.
+        Toda tabela de Preço deve ser obrigatoriamente vinculada a um tipo de veiculo, para que seja efetuada a cobrança.<br>
+        Todo tipo de veiculo para ser cadastrado a uma nova tabela, deve esta com status ativo na pagina <a href="/admin/veiculoType">Cadastrar tipo de veiculo.</a>
     </div>
 
     <form method="POST" action="{{ route('tbPreco.store') }}">
@@ -22,14 +23,14 @@
                 <label for="nome" class="col-sm-2 col-form-label">Tipo de veiculo</label>       
                 <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
                     <option value="" selected> </option>
-                    @if(!isset($tipoVeiculo))
+                    @if(!isset($tipoVeiculoCadastro))
 
                         <option value="1">P</option>
                         <option value="1">M</option>
 
                     @else
 
-                        @foreach($tipoVeiculo as $tipo)
+                        @foreach($tipoVeiculoCadastro as $tipo)
                         <option value="{{$tipo->id}}">{{$tipo->tamanho}}</option>
                         @endforeach
                         

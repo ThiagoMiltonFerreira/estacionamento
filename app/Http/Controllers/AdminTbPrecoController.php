@@ -2,19 +2,90 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\tipo;
+use App\preco;
 
 class AdminTbPrecoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    private $data;
+    private $error;
+    private $sucess;
+    private $valida = [
+        'vlUmaHora' => 'required|numeric|min:0|max:100',
+        'vlDuasHoras'=>'required|numeric|min:0|max:100',
+        'vlTresHoras'=>'required|numeric|min:0|max:100',
+        'vlQuatroHoras'=>'required|numeric|min:0|max:100',
+        'vlDiaria'=>'required|numeric|min:0|max:100',
+        'vlQuinzeMin'=>'required|numeric|min:0|max:100',
+        'vlTrintaMin'=>'required|numeric|min:0|max:100',
+        'vlSessentaMin'=>'required|numeric|min:0|max:100'
+    ];
+
+    public function tipoVeiculoCadastro()
     {
-        
-        return view('tabelaDePreco');
+        $tpVeiculo = new tipo;
+        try {
+            $tipoVeiculoCadastro = $tpVeiculo->select('tipos.id as id','tipos.tamanho as tamanho')
+                                            ->leftjoin('preco','tipos.id','=','preco.tipoid')
+                                            ->where('tipos.ativo','=',1)
+                                            ->whereNull('preco.tipoId')->get();  
+        } catch (\Throwable $th) {
+            die('Erro ao carregar tipos de veiculos Tela Cadastrar');
+        }
+  
+        return $tipoVeiculoCadastro;                             
+    }
+    public function tipoVeiculoVisualizar()
+    {
+        $tpVeiculo = new tipo;
+        try {
+            $tipoVeiculoVisualizar = $tpVeiculo->select('tipos.id as id','tipos.tamanho as tamanho')
+                                                ->leftjoin('preco','tipos.id','=','preco.tipoid')
+                                                ->whereNotNull('preco.tipoId')->get();  
+        } catch (\Throwable $th) {
+            die('Erro ao carregar tipos de veiculos Tela Visualizar');
+        }
+
+                                
+        return $tipoVeiculoVisualizar;                         
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+    public function setData($data)
+    {
+        $this->data=$data;
+    }
+    public function getError()
+    {
+        return $this->error;
+    }
+    public function setError($data)
+    {
+        $this->error=$data;
+    }
+    public function getSucess()
+    {
+        return $this->sucess;
+    }
+    public function setSucess($data)
+    {
+        $this->sucess=$data;
+    }
+
+    
+    public function index(tipo $tpVeiculo)
+    {
+
+        $tipoVeiculoCadastro = $this->tipoVeiculoCadastro(); 
+        $tipoVeiculoVisualizar = $this->tipoVeiculoVisualizar();
+
+        return view('tabelaDePreco',compact("tipoVeiculoCadastro"),compact("tipoVeiculoVisualizar"));
     }
 
     /**
@@ -22,9 +93,19 @@ class AdminTbPrecoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(tipo $tpVeiculo)
     {
-        return "Pesquisar Tabela de cobrança com base no tipo";
+        
+        try {
+            $data = $tpVeiculo->where('preco.tipoId','=',$_GET['tipoId'])->join('preco','tipos.id','=','preco.tipoid')->get();
+        } catch (\Throwable $th) {
+            die('Erro ao Pesquisar Veiculo'.$th->getMessage());
+        }
+        $tipoVeiculoCadastro = $this->tipoVeiculoCadastro(); 
+        $tipoVeiculoVisualizar = $this->tipoVeiculoVisualizar();
+
+        return view('tabelaDePreco',compact("tipoVeiculoCadastro","tipoVeiculoVisualizar","data"));                                    
+
     }
 
     /**
@@ -33,9 +114,23 @@ class AdminTbPrecoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+    public function store(Request $request, preco $preco)
     {
-        return"Salvar os dados da request no banco";
+        $validate = $this->validate($request, $this->valida);
+        $data = $request->all();
+        try {
+            $preco->create($data);
+            $this->setSucess('Tabela de Preços cadastrada com sucesso!');
+            $sucess = $this->getSucess();
+            return redirect()->route('tbPreco.index',compact('sucess'));     
+        } catch (\Throwable $th) {
+            $this->setError($th->getMessage());
+            $error = $this->getError();
+            return redirect()->route('tbPreco.index',compact('error'));
+        }
+
+
     }
 
     /**
@@ -58,7 +153,7 @@ class AdminTbPrecoController extends Controller
      */
     public function edit($id)
     {
-     
+        
     }
 
     /**
@@ -68,9 +163,24 @@ class AdminTbPrecoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(preco $preco, Request $request, $id)
     {
-        return"Update";
+        try {
+            $validate = $this->validate($request, $this->valida);
+        } catch (\Throwable $th) {
+            return redirect()->route('tbPreco.index');
+        }                             
+        $data = $request->all();
+        try {
+            $update = $preco->find($id)->update($data);
+            $this->setSucess("Tabela de cobrança atualizada com sucesso!");
+        } catch (\Throwable $th) {
+            $this->setError("Erro ao Atualizar tabela de cobrança, ".$th->getMessage());
+        }   
+        $error = $this->getError();
+        $sucess = $this->getSucess();
+        return redirect()->route('tbPreco.index',$error!=NULL?compact('error'):compact('sucess'));
+        
     }
 
     /**
@@ -83,9 +193,23 @@ class AdminTbPrecoController extends Controller
     {
         //
     }
-    public function showAll()
+
+    public function showAll(tipo $tpVeiculo)
     {
-        return "Visualizar todas tabelas de preço";
+      
+        $tipoVeiculoCadastro = $this->tipoVeiculoCadastro(); 
+        $tipoVeiculoVisualizar = $this->tipoVeiculoVisualizar();
+        try {
+           
+            $data = $tpVeiculo->select('preco.id as id','tipos.tamanho as tamanho','preco.vlUmaHora','preco.vlDuasHoras','preco.vlTresHoras','preco.vlQuatroHoras','preco.vlDiaria','preco.vlQuinzeMin','preco.vlTrintaMin','preco.vlSessentaMin')
+                                                ->join('preco','tipos.id','=','preco.tipoid')
+                                                ->get();  
+        } catch (\Throwable $th) {
+            die('Erro ao carregar tabelas de preco'.$th->getMessage());
+        }
+        
+        return view('tabelaDePreco',compact("tipoVeiculoCadastro","data","tipoVeiculoVisualizar"));
+
     }
 
 }
