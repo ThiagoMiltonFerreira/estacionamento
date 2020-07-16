@@ -146,17 +146,21 @@ class HomeController extends Controller
         }
    
         try {
-            $patio = $veiculos->select('veiculos.id','veiculos.placa','tipos.tamanho','veiculos.patioId','veiculos.horaEntrada','veiculos.horaSaida')
-                                                                                                    
-            ->whereNull('horaSaida')
-            ->join('tipos', 'tipos.id', '=', 'veiculos.tipoId')
-            ->get(); // Pagar os campos especificados  os veiculos onde horaSaida e nulo e unir com a tabela tipos onde 'tipos.id', '=', 'veiculos.tipoId'
+            $patio = $veiculos->select('veiculos.id','veiculos.placa','tipos.tamanho','veiculos.patioId','veiculos.horaEntrada','veiculos.horaSaida')                                                                                                   
+                            ->whereNull('horaSaida')
+                            ->join('tipos', 'tipos.id', '=', 'veiculos.tipoId')
+                            ->get(); // Pagar os campos especificados  os veiculos onde horaSaida e nulo e unir com a tabela tipos onde 'tipos.id', '=', 'veiculos.tipoId'
         } catch (\Throwable $th) {
             die("codigo 3004 | Erro ao Carregar veiculos no Patio </h1> - ".$th->getMessage());
         }
        
         try {
-            $tiposVeiculo = $tipos->select('tipos.tamanho','tipos.ativo')->where('tipos.ativo','=',1)->orderBy('tamanho', 'ASC')->get();
+            $tiposVeiculo = $tipos->select('tipos.id as id','tipos.tamanho as tamanho')
+                                    ->leftjoin('preco','tipos.id','=','preco.tipoid')
+                                    ->where('tipos.ativo','=',1)
+                                    ->whereNotNull('preco.tipoId')
+                                    ->orderBy('tamanho', 'ASC')
+                                    ->get(); 
         } catch (\Throwable $th) {
             die("codigo 3005 | Erro ao Carregar Tipos de veiculos </h1> - ".$th->getMessage());
         }
