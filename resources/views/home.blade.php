@@ -75,7 +75,7 @@
   </script>
 @stop
 @section('content_header')
-        <meta http-equiv="refresh" content="5">
+        <!--<meta http-equiv="refresh" content="5">-->
         <h1 id="align-text-center">Entrada de Veiculos</h1>
 
 @stop
@@ -137,7 +137,7 @@
                 <select class="custom-select" id="inputGroupSelect01" name="tipoId" required>
                 <option></option>
                   @foreach($tiposVeiculo as $tipo)
-                    <option value="1">{{$tipo->tamanho}}</option>
+                    <option value="{{$tipo->id}}">{{$tipo->tamanho}}</option>
                   @endforeach
                 </select> 
                 &nbsp;
@@ -182,7 +182,6 @@
 
 
       -->
-
       <hr>
 
       <table class="table">

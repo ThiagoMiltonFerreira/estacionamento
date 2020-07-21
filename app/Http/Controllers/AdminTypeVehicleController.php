@@ -53,6 +53,7 @@ class AdminTypeVehicleController extends Controller
         ]);
 
         $data = $request->all();
+        $data["ativo"]="0";
         try {
             $tipo = $this->tipo->create($data);
             if($tipo)
@@ -72,7 +73,7 @@ class AdminTypeVehicleController extends Controller
             $data = $this->tipo->all();
             $error = "codigo 6000 | Falha ao cadastrar novo tipo de veiculo - ".$th->getMessage(); 
         }
-       
+      
         return view('cadastrarTipoDeVeiculo',compact('data',$error!=null?'error':'sucess'));
     }
 

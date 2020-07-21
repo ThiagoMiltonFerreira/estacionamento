@@ -57,6 +57,7 @@
             <th scope="col">15 minutos</th>
             <th scope="col">30 minutos</th>
             <th scope="col">60 minutos</th>
+            <th scope="col">Diaria</th>
             <th scope="col"></th>
 
         </tr>
@@ -99,6 +100,9 @@
                     </td>
                     <td>
                         <input type="number" class="form-control" name="vlSessentaMin" value="{{$value->vlSessentaMin}}" step="0.01" min="0" max="100" required>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="vlDiaria" value="{{$value->vlDiaria}}" step="0.01" min="0" max="100" required>
                     </td>
                     <td>
                         <button class="btn btn-danger" type="submit" onclick="return confirm('Deseja realmente alterar estes dados?')">Alterar</button>

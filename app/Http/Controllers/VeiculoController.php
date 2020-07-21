@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\veiculos;
+use App\preco;
 use DateTime;
 use App\Http\Requests\validateVeiculo;
 
@@ -152,20 +153,31 @@ class VeiculoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,preco $preco, $id)
     {
         date_default_timezone_set('America/Sao_Paulo');
         $dateAtual = date("Y-m-d H:i:s");
         
         try {
             $dataVeiculo = $this->veiculo->find($id);
-
+            if($dataVeiculo)
+            {
+                try {
+                    $dataPreco = json_decode($preco->where("tipoId","=",$dataVeiculo['tipoId'])->get()[0]);
+                } catch (\Throwable $th) {
+                    die("Erro ao pesquisar tipo de veiculo na tabela de preco: ".$th->getMessage());
+                }
+            }
         } catch (\Throwable $th) {
             die("codigo 902 | Erro ao Pesquisar Veiculo </h1> - ".$th->getMessage());
         }
        
-    
-        $d1     =   new DateTime( $dataVeiculo['horaEntrada'] );
+        
+        //$dt = json_decode($this->getData());
+        //var_dump($dataPreco);
+        //exit;
+
+        $d1     =   new DateTime( $dataVeiculo->horaEntrada );
 
         $d2     =   new DateTime( $dateAtual );
 
@@ -181,24 +193,24 @@ class VeiculoController extends Controller
         // calculo 4 primeiras Horas 12 reais
         if( $qtdHoras>0 && $qtdHoras<2 )
         {
-            $valorTotal += 12;
+            $valorTotal += $dataPreco->vlUmaHora;
         }
         else if( $qtdHoras>1 && $qtdHoras<3 )
         {
-            $valorTotal += 24;
+            $valorTotal += $dataPreco->vlDuasHorasHoras;
         }
         else if( $qtdHoras>2 && $qtdHoras<4 )
         {
-            $valorTotal += 36;
+            $valorTotal += $dataPreco->vlTresHoras;
         }
         else if( $qtdHoras>3 && $qtdHoras<5 )
         {
-            $valorTotal += 48;
+            $valorTotal += $dataPreco->vlQuatroHoras;
         }
         else if( $qtdHoras>=5 )
         {
             // Acima de 4 horas vira diaria 30 reais
-            $valorTotal +=60;
+            $valorTotal +=$dataPreco->vlDiaria;
             $diaria = true;
         }
         
@@ -207,17 +219,17 @@ class VeiculoController extends Controller
         {
             if( $qtdMinutos>=0 && $qtdMinutos<=15 )
             {
-                $valorTotal += 3;
+                $valorTotal += $dataPreco->vlQuinzeMin;
             }
         
             else if( $qtdMinutos>=16 && $qtdMinutos<=30 )
             {
-                $valorTotal += 6;
+                $valorTotal += $dataPreco->vlTrintaMin;
             }
     
             else if( $qtdMinutos>=31 && $qtdMinutos<=60 )
             {
-                $valorTotal += 9;
+                $valorTotal += $dataPreco->vlSessentaMin;
             }
         }
 

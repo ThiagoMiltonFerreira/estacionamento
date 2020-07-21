@@ -30,6 +30,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+    public function data(PatioController $patios,patio $modelPatio,veiculos $veiculos,VeiculoController $veiculoController,User $user,tipo $tipos,$idVeiculo = null)
+    { 
+
+        return"data";
+
+    }
+
+
     public function index(PatioController $patios,patio $modelPatio,veiculos $veiculos,VeiculoController $veiculoController,User $user,tipo $tipos,$idVeiculo = null)
     {    
         //dd(Auth::user()->idTipoAdminUser);
@@ -169,4 +178,5 @@ class HomeController extends Controller
         //exit;
         return view('home',compact('patio','patioId',isset($veiculo)?'veiculo':'','tiposVeiculo'));  
     }
+
 }

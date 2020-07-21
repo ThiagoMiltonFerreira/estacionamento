@@ -28,7 +28,7 @@ Route::get('/', function () {
 	
 });
 
-
+Route::get('/home/table', 'HomeController@data')->name('home');
 Route::get('/home/{idVeiculo?}', 'HomeController@index')->name('home');
 
 Route::resource('/patio','PatioController')->middleware('auth');
